@@ -1,12 +1,12 @@
 # envs blocklist tool
-An collection of modules for Synapse to block temporary email addresses.
+An collection of modules for Synapse to block temporary email addresses.  
 This Tool generates a module config file for synapse in `/etc/matrix-synapse/conf.d/modules.yaml`.
 
 Please do not use the tool if you do not understand what it does. Also make sure that the dependencies are installed and that you have customized all the files in the repo.
 
 # Installation
 
-clone the repo to `/opt`:
+clone the repo to `/opt`:  
 `git clone https://github.com/envs-net/blocklist_module.git /opt/blocklist_module`
 
 ## dependencies
@@ -47,7 +47,7 @@ Where your python environment is depends on your installation method. Visit
 
 # Usage
 
-generate your modules.yaml:
+generate your modules.yaml:  
 `bash /opt/blocklist_module/generate_blocklist`
 
 ensure synapse load config's from the conf.d path.  
