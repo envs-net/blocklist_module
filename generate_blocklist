@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+dir='/opt/blocklist_module'
+config='/etc/matrix-synapse/conf.d/modules.yaml'
+
+bash "$dir"/get-disposable-email-domains
+
+cat "$dir"/blocked_domains.txt >> "$dir"/disposable-email-domains.txt
+grep -v -x -f "$dir"/allowed_domains.txt "$dir"/disposable-email-domains.txt > /tmp/blocklist.tmp
+
+sort /tmp/blocklist.tmp | uniq > /tmp/blocklist.txt
+sed -i -e 's/^/        - "@/' -e 's/$/"/' /tmp/blocklist.txt
+
+cat "$dir"/module_header.txt /tmp/blocklist.txt > "$dir"/modules.yaml
+
+if [ $(cmp --silent "$dir"/modules.yaml "$config") ]; then
+	printf 'backup old modules.yaml and write the new file.\n'
+	cp "$config" "$dir"/modules.yaml_bak
+	cp "$dir"/modules.yaml "$config"
+fi
+
+rm /tmp/blocklist.txt
+
+exit 0
