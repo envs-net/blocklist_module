@@ -19,6 +19,6 @@ if [ $(cmp --silent "$dir"/modules.yaml "$config") ]; then
 	cp "$dir"/modules.yaml "$config"
 fi
 
-rm /tmp/blocklist.txt
+rm /tmp/blocklist.txt "$dir"/disposable-email-domains.txt
 
 exit 0
