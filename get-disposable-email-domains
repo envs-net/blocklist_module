@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-dir='/opt/blocklist_module'
+dir='/opt/synapse_blocklist_module'
 
 curl -s -o /tmp/domains.txt https://raw.githubusercontent.com/disposable/disposable-email-domains/master/domains.txt
 curl -s -o /tmp/whitelist.txt https://raw.githubusercontent.com/disposable/disposable/refs/heads/master/whitelist.txt

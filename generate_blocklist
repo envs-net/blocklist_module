@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-dir='/opt/blocklist_module'
+dir='/opt/synapse_blocklist_module'
 config='/etc/matrix-synapse/conf.d/modules.yaml'
 
 bash "$dir"/get-disposable-email-domains
@@ -13,7 +13,9 @@ sed -i -e 's/^/        - "@/' -e 's/$/"/' /tmp/blocklist.txt
 
 cat "$dir"/module_header.txt /tmp/blocklist.txt > "$dir"/modules.yaml
 
-if [ $(cmp --silent "$dir"/modules.yaml "$config") ]; then
+if cmp -s "$dir"/modules.yaml "$config"; then
+	printf '%s is up-to-date.\n' "$config"
+else
 	printf 'backup old modules.yaml and write the new file.\n'
 	cp "$config" "$dir"/modules.yaml_bak
 	cp "$dir"/modules.yaml "$config"

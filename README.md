@@ -7,7 +7,7 @@ Please do not use the tool if you do not understand what it does. Also make sure
 # Installation
 
 clone the repo to `/opt`:  
-`git clone https://github.com/envs-net/synapse_blocklist_module.git /opt/blocklist_module`
+`git clone https://github.com/envs-net/synapse_blocklist_module.git /opt/synapse_blocklist_module`
 
 ## dependencies
 
@@ -48,7 +48,7 @@ Where your python environment is depends on your installation method. Visit
 # Usage
 
 generate your modules.yaml:  
-`bash /opt/blocklist_module/generate_blocklist`
+`bash /opt/synapse_blocklist_module/generate_blocklist`
 
 ensure synapse load config's from the conf.d path.  
 see [https://git.envs.net/envs/matrix-conf/src/branch/master/etc/systemd/system/matrix-synapse.service#L15](https://git.envs.net/envs/matrix-conf/src/branch/master/etc/systemd/system/matrix-synapse.service#L15).
