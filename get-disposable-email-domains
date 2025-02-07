@@ -14,6 +14,6 @@ done
 grep -v -x -f /tmp/whitelist.txt /tmp/domains.txt > /tmp/domains.tmp
 grep -v -x -f /tmp/greylist.txt /tmp/domains.tmp > "$dir"/disposable-email-domains.txt
 
-rm /tmp/domains.txt /tmp/whitelist.txt /tmp/greylist.txt
+rm /tmp/domains.tmp /tmp/domains.txt /tmp/whitelist.txt /tmp/greylist.txt
 
 exit 0
