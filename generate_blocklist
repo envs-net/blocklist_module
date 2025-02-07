@@ -21,6 +21,6 @@ else
 	cp "$dir"/modules.yaml "$config"
 fi
 
-rm /tmp/blocklist.txt "$dir"/disposable-email-domains.txt
+rm /tmp/blocklist.tmp /tmp/blocklist.txt "$dir"/disposable-email-domains.txt
 
 exit 0
