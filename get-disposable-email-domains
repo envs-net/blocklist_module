@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-dir='/opt/synapse_blocklist_module'
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 
 curl -s -o /tmp/domains.txt https://raw.githubusercontent.com/disposable/disposable-email-domains/master/domains.txt
 curl -s -o /tmp/whitelist.txt https://raw.githubusercontent.com/disposable/disposable/refs/heads/master/whitelist.txt
@@ -8,12 +8,11 @@ curl -s -o /tmp/greylist.txt https://raw.githubusercontent.com/disposable/dispos
 
 lists='/tmp/domains.txt /tmp/whitelist.txt /tmp/greylist.txt'
 for i in $lists; do
-        sed -i -e '/^$/d' -e '/^#/d' "$i"
+	sed -i -e '/^$/d' -e '/^#/d' "$i"
 done
 
-grep -v -x -f /tmp/whitelist.txt /tmp/domains.txt > /tmp/domains.tmp
-grep -v -x -f /tmp/greylist.txt /tmp/domains.tmp > "$dir"/disposable-email-domains.txt
+grep -v -x -f /tmp/whitelist.txt -f /tmp/greylist.txt /tmp/domains.txt > "$SCRIPT_DIR"/disposable-email-domains.txt
 
-rm /tmp/domains.tmp /tmp/domains.txt /tmp/whitelist.txt /tmp/greylist.txt
+rm /tmp/domains.txt /tmp/whitelist.txt /tmp/greylist.txt
 
 exit 0

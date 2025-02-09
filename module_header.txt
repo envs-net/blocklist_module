@@ -23,7 +23,7 @@ modules:
       # to already be joined to the room - Mjolnir will not automatically join
       # these rooms.
       ban_lists:
-        # EBL
+        # envs-ban-list
         - "!GGuqmQVLNyWASNjVQw:envs.net"
         # matrix-coc-bl
         - "!WuBtumawCeOGEieRrp:matrix.org"

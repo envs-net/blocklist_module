@@ -1,26 +1,33 @@
 #!/usr/bin/env bash
 
-dir='/opt/synapse_blocklist_module'
-config='/etc/matrix-synapse/conf.d/modules.yaml'
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+MODULES_FILE='/etc/matrix-synapse/conf.d/modules.yaml'
 
-bash "$dir"/get-disposable-email-domains
+"$SCRIPT_DIR"/get-disposable-email-domains
 
-cat "$dir"/blocked_domains.txt >> "$dir"/disposable-email-domains.txt
-grep -v -x -f "$dir"/allowed_domains.txt "$dir"/disposable-email-domains.txt > /tmp/blocklist.tmp
+[ ! -s "$SCRIPT_DIR"/disposable-email-domains.txt ] && printf 'file disposable-email-domains.txt not found.\n' && exit 1
 
-sort /tmp/blocklist.tmp | uniq > /tmp/blocklist.txt
-sed -i -e 's/^/        - "@/' -e 's/$/"/' /tmp/blocklist.txt
+[ -s "$SCRIPT_DIR"/blocked_domains.txt ] && cat "$SCRIPT_DIR"/blocked_domains.txt >> "$SCRIPT_DIR"/disposable-email-domains.txt
 
-cat "$dir"/module_header.txt /tmp/blocklist.txt > "$dir"/modules.yaml
-
-if cmp -s "$dir"/modules.yaml "$config"; then
-	printf '%s is up-to-date.\n' "$config"
+if [ -s "$SCRIPT_DIR"/allowed_domains.txt ]; then
+	grep -v -x -f "$SCRIPT_DIR"/allowed_domains.txt "$SCRIPT_DIR"/disposable-email-domains.txt > /tmp/blocklist.txt
+	sort -u -o /tmp/blocklist.txt{,}
 else
-	printf 'backup old modules.yaml and write the new file.\n'
-	cp "$config" "$dir"/modules.yaml_bak
-	cp "$dir"/modules.yaml "$config"
+	sort -u -o /tmp/blocklist.txt "$SCRIPT_DIR"/disposable-email-domains.txt
 fi
 
-rm /tmp/blocklist.tmp /tmp/blocklist.txt "$dir"/disposable-email-domains.txt
+sed -i -e '/^$/d' -e '/^#/d' -e 's/^/        - "@/' -e 's/$/"/' /tmp/blocklist.txt
+
+cat "$SCRIPT_DIR"/module_header.txt /tmp/blocklist.txt > "$SCRIPT_DIR"/modules.yaml
+
+if cmp -s "$SCRIPT_DIR"/modules.yaml "$MODULES_FILE"; then
+	printf '%s is up-to-date.\n' "$MODULES_FILE"
+else
+	printf 'backup old modules.yaml and write the new file.\n'
+	cp "$MODULES_FILE" "$SCRIPT_DIR"/modules.yaml_bak
+	cp "$SCRIPT_DIR"/modules.yaml "$MODULES_FILE"
+fi
+
+rm /tmp/blocklist.txt "$SCRIPT_DIR"/disposable-email-domains.txt
 
 exit 0
