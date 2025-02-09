@@ -1,4 +1,0 @@
-envs.net
-c2.hu
-freemail.hu
-gmail.hu
